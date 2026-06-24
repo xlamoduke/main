@@ -1,0 +1,12 @@
+import { cards } from '../engine/game';
+import { beatsCard, canBeatSet } from '../rules/cards';
+import { respond, resolveBattle, specialPenaltyTarget, startBattle } from '../rules/battle';
+import { scoreRound } from '../engine/game';
+const trump={noTrump:false as const,trumpSuit:'hearts' as const}; const nt={noTrump:true as const};
+console.log('1. Shaman неперебиваем:', beatsCard(cards('6S')[0], cards('AH')[0], trump)===false);
+console.log('2. В бескозырке 6♠ обычная шестёрка:', beatsCard(cards('6S')[0], cards('7S')[0], nt)===true);
+console.log('3. Нельзя частично перебить набор:', canBeatSet(cards('AS 10S'), cards('KS QS'), trump)===false);
+let b=startBattle(0 as any,cards('7C'),trump); b=respond(b,1 as any,cards('8C'),'open',trump); b=respond(b,2 as any,cards('9C'),'open',trump); b=respond(b,3 as any,cards('6D'),'discard',trump); console.log('4. Банк получает последний перебивший:', resolveBattle(b).bankOwnerId===2);
+let fa=startBattle(0 as any,cards('AS AH AD AC'),trump,12); fa=respond(fa,1 as any,cards('6S 10H KH QH'),'open',trump); fa=respond(fa,2 as any,cards('7D 8D 9D JD'),'discard',trump); fa=respond(fa,3 as any,cards('7C 8C 9C JC'),'discard',trump); console.log('5. Четыре туза отражаются обратно:', specialPenaltyTarget(resolveBattle(fa))==='A');
+let e=scoreRound(60,60,0); e=scoreRound(60,60,e.eggDebt); const fin=scoreRound(20,100,e.eggDebt); console.log('6. Яйца накапливают eggDebt:', fin.penalties.A===8);
+let t=startBattle(0 as any,cards('6C 7C 8C 9C'),trump); t=respond(t,1 as any,cards('10C JC QC KC'),'open',trump); console.log('7. tauntInsufficient доступен после 4-карточного перебития:', t.tauntAvailableFor?.includes(1 as any));
