@@ -1,0 +1,1 @@
+{"scripts":{"build":"tsc","test":"tsc && node dist/tests/rules.test.js","simulate":"tsc && node dist/src/cli/simulate.js","demo":"tsc && node dist/src/cli/demo.js"},"devDependencies":{},"dependencies":{}}
